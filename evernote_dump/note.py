@@ -14,6 +14,7 @@ class Note(object):
     __MEDIA_PATH = "media/"
     __ISO_DATE_FORMAT = "%Y%m%dT%H%M%SZ"
     __TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+    __TIME_FORMAT2 = "%Y-%m-%d"
     def __init__(self):
         self.html2text = html2text.HTML2Text()
         # Extracted
@@ -81,7 +82,7 @@ class Note(object):
         self.__markdown = self.html2text.handle(self.__html.decode('utf-8'))
         
     def create_file(self):
-        with open(self.__path + self.__filename,'w') as outfile:
+        with open(self.__path + self.get_created_date().strftime(self.__TIME_FORMAT2) + " " + self.__filename,'w') as outfile:
             outfile.write(self.__markdown)
         os.utime(self.__path, (self.__created_date.timestamp(), self.__updated_date.timestamp()))
 
@@ -105,7 +106,7 @@ class Note(object):
             for i in range(len(self.__attachments)):
                 self.__markdown += "\n[%s]: %s%s" % (self.__attachments[i].get_hash(), self.__MEDIA_PATH, self.__attachments[i].get_filename())
                 self.__markdown += self.__attachments[i].get_attributes()
-                
+
     def create_markdown_note_attr(self):
         self.__markdown += "\n---"
         self.__markdown += "\n### NOTE ATTRIBUTES"
