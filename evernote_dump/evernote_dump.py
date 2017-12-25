@@ -8,7 +8,7 @@
 import sys
 import xml.sax # Steaming XML data for use with larger files
 from note import Note, Attachment
-from helpers import isYesNo, chooseLanguage, lang, isPythonThree
+from helpers import chooseLanguage, lang, isPythonThree
 
 ############################
 ## Note Handler Functions ##
@@ -101,7 +101,7 @@ if ( __name__ == "__main__"):
 
     #INIT Request user input
     chooseLanguage()
-    keep_file_names = isYesNo('_keep_file_names_q')
+    keep_file_names = True
 
     # create an XMLReader
     parser = xml.sax.make_parser()
