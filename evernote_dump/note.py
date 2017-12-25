@@ -14,7 +14,10 @@ class Note(object):
     __MEDIA_PATH = "media/"
     __ISO_DATE_FORMAT = "%Y%m%dT%H%M%SZ"
     __TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-    __TIME_FORMAT2 = "%Y-%m-%d"
+
+    # Format used in note filename
+    __TIME_FORMAT2 = "%Y_%m_%d_%a"
+
     def __init__(self):
         self.html2text = html2text.HTML2Text()
         # Extracted
