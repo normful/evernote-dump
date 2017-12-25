@@ -70,23 +70,8 @@ def chooseLanguage():
         phrase += '[' + str(counter) + ']' + language + ' '
         languages.append(language)
         counter += 1
+    selang = languages[0]
 
-    while True:
-        if sys.version_info[:2] <= (2, 7):
-            try:
-                result = int(raw_input(phrase))
-            except:
-                result = -1
-        else:
-            try:
-                result = int(input(phrase))
-            except:
-                result = -1
-            
-        if result <= len(languages) and result > 0:
-            selang = languages[result -1] 
-            break
-        
 def makeDirCheck(path):
     '''
     # Check if path exists. If not found path is created
