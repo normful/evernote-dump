@@ -4,6 +4,8 @@
 import os
 import sys
 from language import translation
+import string
+
 
 def checkForDouble(path, filename):
     '''
@@ -105,6 +107,9 @@ def multiChoice(inTuple):
             return result
 
 def urlSafeString(text):
-    for c in r'[]/\;,><&*:%=+@!#^()|?^':
-        text = text.replace(c,'')
-    return text
+    # Copied from https://stackoverflow.com/a/295242/1995703
+    safechars = bytearray((" _-.()[],'+@:" + string.digits + string.ascii_letters).encode())
+    allchars = bytearray(range(0x100))
+    deletechars = bytearray(set(allchars) - set(safechars))
+    safe_filename = text.encode('ascii', 'ignore').translate(None, deletechars).decode()
+    return safe_filename
