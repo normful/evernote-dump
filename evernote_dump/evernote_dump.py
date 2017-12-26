@@ -5,6 +5,7 @@
 ## IMPORTS ##
 #############
 
+import traceback
 import sys
 import xml.sax # Steaming XML data for use with larger files
 from note import Note, Attachment
@@ -119,5 +120,6 @@ if ( __name__ == "__main__"):
             current_file = sys.argv[i].replace(".enex", "/")
             try:
                 parser.parse(sys.argv[i])
-            except:
+            except Exception:
+                traceback.print_exc(file=sys.stdout)
                 print(sys.argv[i] + " was unable to be parsed correctly.")
