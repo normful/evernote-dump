@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from helpers import *
-from datetime import datetime
+from datetime import datetime, date
 import re # Regex module for extracting note attachments
 import html2text # Convert html notes to markdown
 import uuid
@@ -85,7 +85,36 @@ class Note(object):
         self.__markdown = self.html2text.handle(self.__html.decode('utf-8'))
         
     def create_file(self):
-        with open(self.__path + self.get_created_date().strftime(self.__TIME_FORMAT2) + " " + self.__filename,'w') as outfile:
+        date_prefix = self.get_created_date().strftime(self.__TIME_FORMAT2)
+
+        # Special case where existing filename starts with something like "MMDDYYYY "
+        matches = re.match(r'([01]\d)([0123]\d)(20[01]\d)\s(.*)', self.__filename)
+
+        if matches is not None:
+            month = int(matches.group(1))
+            day   = int(matches.group(2))
+            year  = int(matches.group(3))
+            parsed_date = date(year, month, day)
+            date_prefix = parsed_date.strftime(self.__TIME_FORMAT2)
+
+            rest = matches.group(4)
+            rest = rest.lstrip()
+
+            if rest == '.md':
+                spacer = ''
+            else:
+                spacer = ' '
+
+            markdown_filename = self.__path + date_prefix + spacer + rest
+
+            print('special case markdown_filename=' + markdown_filename)
+        else:
+            markdown_filename = self.__path + date_prefix + " " + self.__filename
+
+        if os.path.isfile(markdown_filename):
+            markdown_filename = markdown_filename.replace('.md', '-2.md')
+
+        with open(markdown_filename, 'w') as outfile:
             outfile.write(self.__markdown)
         os.utime(self.__path, (self.__created_date.timestamp(), self.__updated_date.timestamp()))
 
